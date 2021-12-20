@@ -1,4 +1,6 @@
-// Modification from https://bitburner.readthedocs.io/en/latest/netscript/netscriptjs.html
+// Cost: 2.6GB
+
+// Slight modification from https://bitburner.readthedocs.io/en/latest/netscript/netscriptjs.html
 
 /** @param {import(".").NS } ns */
 export async function main(ns) {
