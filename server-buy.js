@@ -3,7 +3,7 @@
 /** @param {import(".").NS } ns */
 export async function main(ns) {
     const servers = ns.getPurchasedServers();
-    const last = Number(servers[servers.length - 1].slice(1));
+    const last = servers.length ? Number(servers[servers.length - 1].slice(1)) : 0;
     const name = ns.purchaseServer(`s${last + 1}`, ns.args[0]);
     if (name === "") {
         ns.tprint("Failed to purchase");
