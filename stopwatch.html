@@ -1,0 +1,118 @@
+<!-- Stopwatch to stop me from playing this game too much -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stopwatch</title>
+        <style>
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                background-color: black;
+            }
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: green;
+            }
+            h1 {
+                font-family: "Courier New", Courier, monospace;
+                text-align: center;
+            }
+            button {
+                width: 100%;
+                font-family: "Courier New", Courier, monospace;
+                background-color: grey;
+                border: none;
+                cursor: pointer;
+            }
+            button:active {
+                background-color: green;
+            }
+            .bad {
+                color: red;
+            }
+        </style>
+        <script>
+            let total_seconds, stopwatch;
+            let started = false;
+
+            const last_date = localStorage.getItem("last_date");
+            const last_time = localStorage.getItem("last_time");
+            if ((last_date && !sameDay(new Date(), new Date(Number(last_date)))) || !last_time) {
+                total_seconds = 0;
+            } else {
+                total_seconds = Number(last_time);
+            }
+
+            localStorage.setItem("last_date", Date.now());
+
+            function checkBad(button, h1) {
+                if (total_seconds === 3599) {
+                    clearInterval(stopwatch);
+                    button.remove();
+                    h1.className = "bad";
+                    h1.innerText = "no more bitburner for today";
+                    return true;
+                }
+                return false;
+            }
+
+            function renderTime() {
+                const seconds = total_seconds % 60;
+                const minutes = (total_seconds - seconds) / 60;
+                h1.innerText = `${pad(minutes)}:${pad(seconds)}`;
+            }
+
+            function sameDay(d1, d2) {
+                return (
+                    d1.getFullYear() === d2.getFullYear() &&
+                    d1.getMonth() === d2.getMonth() &&
+                    d1.getDate() === d2.getDate()
+                );
+            }
+
+            function pad(n) {
+                const strN = n.toString();
+                return (strN.length === 1 ? "0" : "") + strN;
+            }
+
+            function buttonClick() {
+                const button = document.querySelector("button");
+                const h1 = document.querySelector("h1");
+
+                if (started) {
+                    clearInterval(stopwatch);
+                    started = false;
+                    button.innerText = "start";
+                } else {
+                    started = true;
+                    stopwatch = setInterval(() => {
+                        if (checkBad(button, h1)) return;
+
+                        total_seconds++;
+                        renderTime();
+                        localStorage.setItem("last_time", total_seconds);
+                    }, 1000);
+                    button.innerText = "stop";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <main>
+            <h1>00:00</h1>
+            <button onclick="buttonClick()">start</button>
+        </main>
+        <script>
+            const button = document.querySelector("button");
+            const h1 = document.querySelector("h1");
+            renderTime();
+            checkBad(button, h1);
+        </script>
+    </body>
+</html>
