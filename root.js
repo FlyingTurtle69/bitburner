@@ -1,6 +1,6 @@
-// Costs: 2.30GB
+// Costs: 2.60GB
 
-const already_tried = ["home", "darkweb"];
+let already_tried, can_hack, can_attack;
 
 /**
  * @param {import(".").NS} ns
@@ -36,6 +36,10 @@ function root(ns, parent) {
             if (portsOpen >= ns.getServerNumPortsRequired(server)) {
                 ns.nuke(server);
                 ns.tprint(server + " nuked");
+                if (ns.getServerRequiredHackingLevel(server) <= ns.getHackingLevel()) {
+                    if (ns.getServerMaxRam(server) > 0) can_attack.push(server);
+                    if (ns.getServerMaxMoney(server) > 0) can_hack.push(server);
+                }
             }
             root(ns, server);
         }
@@ -44,5 +48,10 @@ function root(ns, parent) {
 
 /** @param {import(".").NS} ns */
 export async function main(ns) {
+    already_tried = ["home", "darkweb"];
+    can_hack = [];
+    can_attack = [];
     root(ns, "home");
+    ns.tprint("INFO hackable servers: ", can_hack);
+    ns.tprint("INFO hostable servers: ", can_attack);
 }
