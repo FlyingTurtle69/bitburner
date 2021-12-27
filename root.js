@@ -1,13 +1,17 @@
-// Costs: 4.25GB
+// Costs: 2.30GB
 
-/** @param {import(".").NS } ns */
-export async function main(ns) {
-    const already_hacked = ns.getHostname() === "home" ? ["home", "darkweb"] : [...ns.args];
-    const servers = ns.scan();
+const already_tried = ["home", "darkweb"];
+
+/**
+ * @param {import(".").NS} ns
+ * @param {string} parent
+ */
+function root(ns, parent) {
+    already_tried.push(parent);
+    const servers = ns.scan(parent);
 
     for (const server of servers) {
-        if (!already_hacked.includes(server)) {
-            already_hacked.push(server);
+        if (!already_tried.includes(server)) {
             let portsOpen = 0;
             if (ns.fileExists("brutessh.exe", "home")) {
                 ns.brutessh(server);
@@ -33,8 +37,12 @@ export async function main(ns) {
                 ns.nuke(server);
                 ns.tprint(server + " nuked");
             }
-            await ns.scp("/scripts/root.js", "home", server);
-            ns.exec("/scripts/root.js", server, 1, ...already_hacked);
+            root(ns, server);
         }
     }
+}
+
+/** @param {import(".").NS} ns */
+export async function main(ns) {
+    root(ns, "home");
 }
