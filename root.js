@@ -57,4 +57,10 @@ export async function main(ns) {
     root(ns, "home");
     ns.tprint("INFO hackable servers: ", can_hack);
     ns.tprint("INFO hostable servers: ", can_attack);
+
+    const { hack } = ns.flags([["hack"]]);
+    if (hack) {
+        ns.tprint(`WARN using hack3.js to hack ${hack} with ${can_attack}`);
+        ns.run("/scripts/hack3.js", 1, hack, ...can_attack);
+    }
 }
