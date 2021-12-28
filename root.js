@@ -1,4 +1,4 @@
-// Costs: 2.60GB
+// Costs: 2.80GB
 
 let already_tried, can_hack, can_attack;
 
@@ -40,6 +40,9 @@ function root(ns, parent) {
                     if (ns.getServerMaxRam(server) > 0) can_attack.push(server);
                     if (ns.getServerMaxMoney(server) > 0) can_hack.push(server);
                 }
+            }
+            if (ns.ls(server).some(f => f.slice(-3) === "cct")) {
+                ns.tprint("INFO coding contract found on ", server);
             }
             root(ns, server);
         }
