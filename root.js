@@ -1,4 +1,4 @@
-// Costs: 2.80GB
+// Costs: 4.90GB
 
 let already_tried, can_hack, can_attack;
 
@@ -61,6 +61,6 @@ export async function main(ns) {
     const { hack } = ns.flags([["hack"]]);
     if (hack) {
         ns.tprint(`WARN using hack3.js to hack ${hack} with ${can_attack}`);
-        ns.run("/scripts/hack3.js", 1, hack, ...can_attack);
+        ns.spawn("/scripts/hack3.js", 1, hack, ...can_attack);
     }
 }
