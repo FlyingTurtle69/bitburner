@@ -12,7 +12,7 @@ export async function main(ns) {
         const ram_each = ns.getServerMaxRam(server) / targets.length;
         for (const target of targets) {
             ns.exec("/scripts/hack1.js", server, 1, target, ram_each);
-            await ns.sleep(10000); // delay to make it out of sync
+            await ns.sleep(2000); // delay to make it out of sync
         }
         await ns.sleep(120000); // more delay to make it out of sync
     }
