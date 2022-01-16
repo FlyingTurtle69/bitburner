@@ -26,7 +26,6 @@ export async function main(ns) {
                 best_ratio = level_ratio;
                 best_node = i;
                 best_upgrade = "level";
-                ns.print("ratio: ", best_ratio, " node: ", best_node, best_upgrade);
             }
 
             const ram_cost = ns.hacknet.getRamUpgradeCost(i, 1);
@@ -35,7 +34,6 @@ export async function main(ns) {
                 best_ratio = ram_ratio;
                 best_node = i;
                 best_upgrade = "ram";
-                ns.print("ratio: ", best_ratio, " node: ", best_node, best_upgrade);
             }
 
             const core_cost = ns.hacknet.getCoreUpgradeCost(i, 1);
@@ -44,7 +42,6 @@ export async function main(ns) {
                 best_ratio = core_ratio;
                 best_node = i;
                 best_upgrade = "core";
-                ns.print("ratio: ", best_ratio, " node: ", best_node, best_upgrade);
             }
         }
 
@@ -75,6 +72,6 @@ export async function main(ns) {
             }
         }
 
-        await ns.sleep(nodes_num * Math.random() * 1000 * 10);
+        await ns.sleep(nodes_num * 1000 * 4);
     }
 }

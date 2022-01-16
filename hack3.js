@@ -31,6 +31,6 @@ export async function main(ns) {
         /* There's no need for other checks because it will just keep failing 
         until it's finished (not crashing) since it's using max ram.
         The sleep is just necessary to prevent freezing*/
-        await ns.sleep(1000);
+        await ns.sleep(2000);
     }
 }

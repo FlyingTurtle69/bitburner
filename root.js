@@ -11,7 +11,7 @@ function root(ns, parent) {
     const servers = ns.scan(parent);
 
     for (const server of servers) {
-        if (!already_tried.includes(server)) {
+        if (!already_tried.includes(server) && !(server.length === 2 && server[0] === "s")) {
             let portsOpen = 0;
             if (ns.fileExists("brutessh.exe", "home")) {
                 ns.brutessh(server);
