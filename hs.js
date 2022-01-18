@@ -21,6 +21,7 @@ function newServerRatio(ns, prod) {
 /** @param {import(".").NS } ns */
 export async function main(ns) {
     const NEW_NODE = -1;
+    const CACHE_PENALTY = 5; // to prevent buying cache upgrades as much
 
     ns.disableLog("sleep");
 
@@ -77,7 +78,7 @@ export async function main(ns) {
                 ns.hacknet.purchaseNode();
                 ns.print("INFO bought server");
             } else {
-                let lowest_cache = ns.hacknet.getNodeStats(0);
+                let lowest_cache = ns.hacknet.getNodeStats(0).cache;
                 let lowest_node = 0;
                 for (let i = 1; i < nodes_num; i++) {
                     const { cache } = ns.hacknet.getNodeStats(i);
@@ -86,8 +87,12 @@ export async function main(ns) {
                         lowest_node = i;
                     }
                 }
-                if (ns.hacknet.upgradeCache(lowest_node, 1)) {
-                    ns.print("INFO upgraded cache on node ", lowest_node);
+                if (ns.hacknet.getCacheUpgradeCost(lowest_cache, 1) * CACHE_PENALTY < money) {
+                    if (ns.hacknet.upgradeCache(lowest_node, 1)) {
+                        ns.print("INFO upgraded cache on node ", lowest_node);
+                    } else {
+                        ns.print("WARN failed to upgrade cache level");
+                    }
                 }
             }
         } else {
@@ -112,6 +117,6 @@ export async function main(ns) {
             }
         }
 
-        await ns.sleep(500);
+        await ns.sleep(1000);
     }
 }
