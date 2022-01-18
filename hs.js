@@ -81,7 +81,7 @@ export async function main(ns) {
                 let lowest_node = 0;
                 for (let i = 1; i < nodes_num; i++) {
                     const { cache } = ns.hacknet.getNodeStats(i);
-                    if (cache > lowest_cache) {
+                    if (cache < lowest_cache) {
                         lowest_cache = cache;
                         lowest_node = i;
                     }
