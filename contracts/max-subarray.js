@@ -1,8 +1,6 @@
-// contract-923351-Netburners on hong-fang-tea
+// Subarray with Maximum Sum
 
-/**
- * @param {number[]} arr
- */
+/** @param {number[]} arr */
 function subarrayWithMaximumSum(arr) {
     let maxN = 0;
     for (let i = 0; i < arr.length; i++) {
@@ -14,9 +12,3 @@ function subarrayWithMaximumSum(arr) {
     }
     return maxN;
 }
-
-const answer = subarrayWithMaximumSum([
-    -5, 10, 1, 3, -2, 6, 0, 1, 10, 5, 10, 7, 7, 10, -4, -3, 1, -6, -8,
-]);
-
-console.log(answer);

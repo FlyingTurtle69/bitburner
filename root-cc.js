@@ -96,6 +96,30 @@ const solution_functions = {
 
         return answer;
     },
+    /** @param {number[]} arr */
+    "Subarray with Maximum Sum": arr => {
+        let maxN = 0;
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = i + 1; j < arr.length + 1; j++) {
+                const nArr = arr.slice(i, j);
+                const nMax = nArr.reduce((a, b) => a + b);
+                if (nMax > maxN) maxN = nMax;
+            }
+        }
+        return maxN;
+    },
+    /** @param {number} n */
+    "Find Largest Prime Factor": n => {
+        let x = n;
+        let i = 2;
+
+        while (x !== 1) {
+            if (x % i === 0) x /= i;
+            else i++;
+        }
+
+        return i;
+    },
 };
 
 let already_tried, can_hack, can_attack;
