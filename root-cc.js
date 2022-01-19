@@ -38,6 +38,64 @@ const solution_functions = {
             .flat(Infinity)
             .filter(e => eval(e) === target);
     },
+    "Minimum Path Sum in a Triangle": arr2d => {
+        function sum2(vi = 1, hi = 0, sum = arr2d[0][0]) {
+            const row = arr2d[vi];
+            let left = row[hi];
+            let right = row[hi + 1];
+
+            if (vi !== arr2d.length - 1) {
+                left = sum2(vi + 1, hi, sum + left);
+                right = sum2(vi + 1, hi + 1, sum + right);
+                sum = 0;
+            }
+            return sum + Math.min(left, right);
+        }
+        return sum2();
+    },
+    /** @param {number[][]} arr2d */
+    "Spiralize Matrix": arr2d => {
+        const height = arr2d.length;
+        const width = arr2d[0].length;
+
+        let left_bound = 0;
+        let right_bound = width - 1;
+        let up_bound = 0;
+        let down_bound = height - 1;
+
+        let remaining = height * width;
+        let y = 0;
+        let x = 0;
+        let direction = "RIGHT";
+        const answer = [];
+
+        while (remaining > 0) {
+            answer.push(arr2d[y][x]);
+
+            if (x === right_bound && direction === "RIGHT") {
+                direction = "DOWN";
+                up_bound++;
+            } else if (y === down_bound && direction === "DOWN") {
+                direction = "LEFT";
+                right_bound--;
+            } else if (x === left_bound && direction === "LEFT") {
+                direction = "UP";
+                down_bound--;
+            } else if (y === up_bound && direction === "UP") {
+                direction = "RIGHT";
+                left_bound++;
+            }
+
+            if (direction === "RIGHT") x++;
+            else if (direction === "LEFT") x--;
+            else if (direction === "UP") y--;
+            else y++; // DOWN
+
+            remaining--;
+        }
+
+        return answer;
+    },
 };
 
 let already_tried, can_hack, can_attack;
@@ -98,7 +156,7 @@ function root(ns, parent) {
                         ns.tprint("ERROR contract `", type, "` failed\n\n");
                     }
                 } else {
-                    ns.tprint("WARN no solution function exists\n\n");
+                    ns.tprint("WARN no solution function exists for ", type, "\n\n");
                 }
             }
 

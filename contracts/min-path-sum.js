@@ -1,3 +1,5 @@
+// Minimum Path Sum in a Triangle
+
 const assert = require("assert");
 
 function minPathSumTriangle(arr2d) {
