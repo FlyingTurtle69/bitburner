@@ -133,6 +133,23 @@ const solution_functions = {
         }
         return arrayJumpingGame(data);
     },
+    /** @param {number} data */
+    "Total Ways to Sum": data => {
+        let count = 0;
+
+        function partition(n, max) {
+            if (n == 0) {
+                count++;
+                return;
+            }
+            for (let i = Math.min(max, n); i >= 1; i--) {
+                partition(n - i, i);
+            }
+        }
+
+        partition(data, data - 1);
+        return count;
+    },
 };
 
 let already_tried, can_hack, can_attack;
