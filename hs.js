@@ -20,10 +20,23 @@ function newServerRatio(ns, prod) {
 
 /** @param {import(".").NS } ns */
 export async function main(ns) {
+    const args = ns.flags([["noUpgrade", false]]);
+    ns.disableLog("sleep");
+
+    if (args.noUpgrade) {
+        // This causes an error but you can ignore it
+        ns.atExit(() => liquidate(ns));
+
+        while (true) {
+            if (ns.hacknet.numHashes() > ns.hacknet.hashCapacity() - 4) {
+                liquidate(ns);
+            }
+            await ns.sleep(500);
+        }
+    }
+
     const NEW_NODE = -1;
     const CACHE_PENALTY = 5; // to prevent buying cache upgrades as much
-
-    ns.disableLog("sleep");
 
     while (true) {
         liquidate(ns);
@@ -117,6 +130,10 @@ export async function main(ns) {
             }
         }
 
-        await ns.sleep(1000);
+        await ns.sleep(3000);
     }
+}
+
+export function autocomplete() {
+    return ["--noUpgrade"];
 }
