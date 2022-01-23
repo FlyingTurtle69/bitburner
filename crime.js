@@ -16,9 +16,9 @@ async function doCrime(ns, crime) {
 export async function main(ns) {
     ns.tail();
 
-    while (ns.getCrimeChance("Mug someone") < 0.5) await doCrime(ns, "Shoplift");
+    while (ns.getCrimeChance("Mug someone") < 0.6) await doCrime(ns, "Shoplift");
 
-    while (ns.getCrimeChance("Homicide") < 0.75) await doCrime(ns, "Homicide");
+    while (ns.getCrimeChance("Homicide") < 0.8) await doCrime(ns, "Mug someone");
 
     while (true) {
         await doCrime(ns, "Homicide");
