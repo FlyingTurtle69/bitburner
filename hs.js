@@ -3,9 +3,9 @@
 // Hacknet Server Manager
 
 /** @param {import(".").NS } ns */
-function liquidate(ns) {
+function liquidate(ns, floor = 0) {
     let counter = 0;
-    while (ns.hacknet.spendHashes("Sell for Money")) {
+    while (ns.hacknet.numHashes() > floor && ns.hacknet.spendHashes("Sell for Money")) {
         counter++;
     }
     if (counter) ns.print(`Liquidated $${counter}m`);
@@ -28,9 +28,7 @@ export async function main(ns) {
         ns.atExit(() => liquidate(ns));
 
         while (true) {
-            if (ns.hacknet.numHashes() > ns.hacknet.hashCapacity() - 4) {
-                liquidate(ns);
-            }
+            liquidate(ns, ns.hacknet.hashCapacity() - 4);
             await ns.sleep(500);
         }
     }
