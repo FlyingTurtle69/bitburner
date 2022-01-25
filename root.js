@@ -1,6 +1,12 @@
 // Costs: 4.90GB
 
 let already_tried, can_hack, can_attack;
+let use_bought_servers = false;
+
+function isNotBoughtServer(s) {
+    if (use_bought_servers) return true;
+    return !((s.length === 2 || s.length === 3) && s[0] === "s") && s.slice(0, 7) !== "hacknet";
+}
 
 /**
  * @param {import(".").NS} ns
@@ -11,7 +17,7 @@ function root(ns, parent) {
     const servers = ns.scan(parent);
 
     for (const server of servers) {
-        if (!already_tried.includes(server) && !(server.length === 2 && server[0] === "s")) {
+        if (!already_tried.includes(server) && isNotBoughtServer(server)) {
             let portsOpen = 0;
             if (ns.fileExists("brutessh.exe", "home")) {
                 ns.brutessh(server);
@@ -51,6 +57,14 @@ function root(ns, parent) {
 
 /** @param {import(".").NS} ns */
 export async function main(ns) {
+    const {
+        hack,
+        share: doShare,
+        bought,
+    } = ns.flags([["hack"], ["share", false], ["bought", false]]);
+
+    use_bought_servers = bought;
+
     already_tried = ["home", "darkweb"];
     can_hack = [];
     can_attack = [];
@@ -58,9 +72,11 @@ export async function main(ns) {
     ns.tprint("INFO hackable servers: ", can_hack);
     ns.tprint("INFO hostable servers: ", can_attack);
 
-    const { hack } = ns.flags([["hack"]]);
     if (hack) {
         ns.tprint(`WARN using hack3.js to hack ${hack} with ${can_attack}`);
         ns.spawn("/scripts/hack3.js", 1, hack, ...can_attack);
+    } else if (doShare) {
+        ns.tprint(`WARN using share-many.js with ${can_attack}`);
+        ns.spawn("/scripts/share-many.js", 1, ...can_attack);
     }
 }
