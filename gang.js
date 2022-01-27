@@ -2,6 +2,8 @@
 
 /** @param {import(".").NS } ns */
 export async function main(ns) {
+    const EQUIPMENT = ns.gang.getEquipmentNames().filter(e => ns.gang.getEquipmentStats(e).hack);
+
     while (true) {
         const members = ns.gang.getMemberNames();
 
@@ -15,7 +17,7 @@ export async function main(ns) {
         // Ascending
         for (const member of members) {
             // TODO: Do the 1.6 -> 1.1 thing
-            if (ns.gang.getAscensionResult(member).hack > 1.6) {
+            if (ns.gang.getAscensionResult(member)?.hack > 1.6) {
                 ns.gang.ascendMember(member);
                 ns.gang.setMemberTask(member, "Train Hacking");
                 // Only ascend one member per cycle
@@ -23,18 +25,13 @@ export async function main(ns) {
             }
         }
 
-        const equipment = ns.gang.getEquipmentNames().filter(e => {
-            const type = ns.gang.getEquipmentType(e);
-            return type === "Rootkit" || type === "Augmentation";
-        });
-
         for (const member of members) {
             // Buy Equipment
             let equip_counter = 0;
-            for (const equip of equipment) {
+            for (const equip of EQUIPMENT) {
                 if (ns.gang.purchaseEquipment(member, equip)) equip_counter++;
             }
-            if (equip_counter > 0) ns.print(`bought ${amount_bought} for ${member}`);
+            if (equip_counter > 0) ns.print(`bought ${equip_counter} for ${member}`);
 
             // TODO: Set Task
         }
