@@ -88,7 +88,7 @@ export async function main(ns) {
             if (ns.hacknet.getPurchaseNodeCost() < money) {
                 ns.hacknet.purchaseNode();
                 ns.print("INFO bought server");
-            } else {
+            } else if (nodes_num > 0) {
                 let lowest_cache = ns.hacknet.getNodeStats(0).cache;
                 let lowest_node = 0;
                 for (let i = 1; i < nodes_num; i++) {
@@ -98,7 +98,7 @@ export async function main(ns) {
                         lowest_node = i;
                     }
                 }
-                if (ns.hacknet.getCacheUpgradeCost(lowest_cache, 1) * CACHE_PENALTY < money) {
+                if (ns.hacknet.getCacheUpgradeCost(lowest_node, 1) * CACHE_PENALTY < money) {
                     if (ns.hacknet.upgradeCache(lowest_node, 1)) {
                         ns.print("INFO upgraded cache on node ", lowest_node);
                     } else {
