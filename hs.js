@@ -29,7 +29,7 @@ export async function main(ns) {
 
         while (true) {
             liquidate(ns, ns.hacknet.hashCapacity() - 4);
-            await ns.sleep(500);
+            await ns.sleep(100);
         }
     }
 
