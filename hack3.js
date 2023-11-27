@@ -11,7 +11,7 @@ export async function main(ns) {
 
     for (const server of servers) {
         ns.killall(server);
-        await ns.scp(files, "home", server);
+        await ns.scp(files, server, "home");
         const ram = ns.getServerMaxRam(server);
         threads[server] = Math.floor(ram / 1.75);
     }

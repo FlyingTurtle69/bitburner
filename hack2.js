@@ -8,7 +8,7 @@ export async function main(ns) {
 
     for (const server of servers) {
         ns.killall(server);
-        await ns.scp(files, "home", server);
+        await ns.scp(files, server, "home");
         const ram_each = ns.getServerMaxRam(server) / targets.length;
         for (const target of targets) {
             ns.exec("/scripts/hack1.js", server, 1, target, ram_each);
